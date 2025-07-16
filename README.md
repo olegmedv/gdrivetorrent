@@ -1,6 +1,6 @@
-# Torrent Downloaders for Google Colab
+# Universal Torrent Downloader for Google Colab
 
-Two versions of torrent downloaders for Google Colab with different storage approaches.
+Fully automated torrent downloader with universal archive system for Google Colab.
 
 ## ⚠️ Important Disclaimer
 
@@ -11,44 +11,51 @@ Two versions of torrent downloaders for Google Colab with different storage appr
 - Users are solely responsible for ensuring compliance with their local laws
 - These tools should not be used for downloading copyrighted material without permission
 
-## 📁 Available Versions
+## 🎯 Universal System Features
 
-### 1. Google Drive Version (`gdrive_torrent_downloader.ipynb`)
-- **Storage**: Google Drive (15GB free)
-- **Access**: Files saved permanently to your Google Drive
-- **Best for**: Smaller files, permanent storage
-- **Requires**: Google Drive mounting and authorization
-
-### 2. Session Temporary Version (`session_temporary_torrent_downloader.ipynb`)
-- **Storage**: Session temporary storage (~70GB)
-- **Access**: Auto-archive into 700MB volumes for download
-- **Best for**: Larger files, temporary processing
-- **Requires**: No additional authorization
+- **🔄 Fully Automated**: Download → Archive → Download to computer
+- **📁 Universal Folder**: All downloads go to `/content/downloads_torrent/`
+- **📦 Auto-Archiving**: Creates 700MB volumes with timestamps
+- **⬇️ Auto-Download**: Archives download to your computer automatically
+- **🚀 70GB Storage**: Session temporary storage (~70GB available)
+- **🔧 No Dependencies**: No Google Drive authorization needed
 
 ## 🚀 Quick Start
 
-### Google Drive Version
-1. Upload `gdrive_torrent_downloader.ipynb` to Google Colab
-2. Mount Google Drive when prompted
-3. Download torrents directly to Drive
-4. Files permanently saved to `/MyDrive/Torrents/`
-
-### Session Temporary Version
+### Universal System (`session_temporary_torrent_downloader.ipynb`)
 1. Upload `session_temporary_torrent_downloader.ipynb` to Google Colab
-2. Download torrents to session temporary storage (~70GB)
-3. Files auto-archived into 700MB volumes
-4. Download archive volumes to your computer
+2. Run setup cells (install dependencies, create folders)
+3. Upload torrent file in Section 4
+4. **Everything happens automatically**:
+   - Downloads to `/content/downloads_torrent/`
+   - Archives into 700MB volumes
+   - Downloads archives to your computer
 
-## 📊 Comparison
+### Legacy Google Drive Version (`gdrive_torrent_downloader.ipynb`)
+- **Deprecated**: Use universal system instead
+- Limited to 15GB storage
+- Requires Google Drive authorization
 
-| Feature | Google Drive Version | Session Temporary Version |
-|---------|---------------------|----------------------|
-| Storage Size | 15GB | ~70GB |
-| File Access | Permanent (Google Drive) | Temporary (download archives) |
-| Authorization | Google Drive required | None |
-| Large Files | Limited by Drive space | Up to 70GB |
-| Archive Support | No | Auto 700MB volumes |
-| Speed | Slower (cloud storage) | Faster (session storage) |
+## 🎯 Universal System Workflow
+
+```
+1. Upload torrent file
+   ↓
+2. Auto-download to /content/downloads_torrent/
+   ↓
+3. Auto-archive into 700MB volumes (torrent_archive_TIMESTAMP.7z.001, .002, etc.)
+   ↓
+4. Auto-download all volumes to your computer
+   ↓
+5. Extract with 7zip/WinRAR
+```
+
+### Advantages
+- **Fully automated**: No manual steps needed
+- **Universal**: Works with any torrent, no name dependencies  
+- **Large capacity**: 70GB vs 15GB Google Drive
+- **Fast**: Local storage performance
+- **Simple**: One workflow for everything
 
 ## 🛠️ Installation & Usage
 
@@ -71,52 +78,40 @@ Two versions of torrent downloaders for Google Colab with different storage appr
 
 ### Storage Details
 
-#### Google Drive Version
-- Files saved directly to Google Drive
-- Organized in `/MyDrive/Torrents/` folder
-- Automatic folder creation
-- 15GB storage limit
-
-#### Session Temporary Version
-- Files downloaded to `/content/torrents/`
-- Auto-archived to `/content/archives/`
-- 700MB archive volumes (.7z format)
-- ~70GB session temporary storage available
+#### Universal System
+- **Download folder**: `/content/downloads_torrent/` (all torrents go here)
+- **Archive folder**: `/content/archives/` (700MB volumes created here)
+- **Archive format**: `torrent_archive_TIMESTAMP.7z.001`, `.002`, etc.
+- **Storage capacity**: ~70GB session temporary storage
+- **Auto-cleanup**: Files lost when session restarts (archives downloaded first)
 
 ### Code Structure
 
 ```python
-# Google Drive Version
-class TorrentDownloader:
-    def __init__(self, download_path)
-    def download_torrent(self, source)
-    def list_files(self)
-
-# Session Temporary Version  
-class LocalTorrentDownloader:
-    def __init__(self, download_path, archive_path)
-    def download_torrent(self, source, auto_archive=True)
-    def create_archives(self, torrent_name)
-    def download_archives(self, archive_name=None)
+# Universal System
+class UniversalTorrentDownloader:
+    def __init__(self, downloads_path, archive_path)
+    def download_torrent(self, source, auto_archive=True, auto_download=True)
+    def create_archives_from_downloads(self)  # Archives everything in downloads folder
+    def download_all_archives(self)           # Downloads all archive volumes
+    def list_downloads(self)                  # Shows files in downloads folder
+    def list_archives(self)                   # Shows created archives
     def cleanup(self, keep_archives=True)
 ```
 
 ## ⚠️ Limitations
 
-### Both Versions
-- Google Colab session timeout (12 hours)
-- Network connectivity dependencies
-- LibTorrent performance constraints
+### Universal System
+- **Session timeout**: 12 hours maximum (Google Colab limitation)
+- **File loss**: Files lost when session restarts (archives downloaded automatically)
+- **Download limit**: 2GB per individual archive volume via Colab
+- **Network dependency**: Requires stable internet connection
+- **LibTorrent constraints**: Performance depends on torrent health/seeders
 
-### Google Drive Version
+### Legacy Google Drive Version (Deprecated)
 - 15GB storage limit
-- Slower upload speeds to Drive
+- Slower performance
 - Requires Google authorization
-
-### Session Temporary Version
-- Files lost when session restarts
-- Must download archives before restart
-- 2GB individual file download limit
 
 ## 🔧 Troubleshooting
 
@@ -128,11 +123,11 @@ class LocalTorrentDownloader:
 5. **Archive errors** (Session Temporary version): Check 7zip installation
 
 ### Performance Tips
-- Use healthy torrents with many seeders
-- Monitor download progress regularly
-- For large files: Use Session Temporary version
-- For permanent storage: Use Google Drive version
-- Download archives immediately (Session Temporary version)
+- **Use healthy torrents**: Choose torrents with many seeders
+- **Monitor progress**: Check download status regularly  
+- **Large files**: Universal system handles up to 70GB
+- **Session management**: Archives download automatically, no manual intervention needed
+- **Network stability**: Ensure stable internet for best performance
 
 ## Legal Notice
 
